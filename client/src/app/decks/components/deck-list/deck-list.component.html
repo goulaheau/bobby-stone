@@ -1,0 +1,30 @@
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Nom</th>
+    <th scope="col">Cartes</th>
+    <th scope="col" class="actions"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let deck of decks">
+    <th scope="row">{{ deck.id }}</th>
+    <td>{{ deck.name }}</td>
+    <td>{{ deck.cards.length }}</td>
+    <td class="actions">
+      <button
+        [routerLink]="'/decks/form/' + deck.id"
+        type="button" class="btn btn-outline-primary">
+        <i class="fa fa-edit"></i>
+      </button>
+
+      <button *ngIf="deck.user"
+              (click)="onClickDelete(deck)"
+              type="button" class="btn btn-outline-primary">
+        <i class="fa fa-trash-o"></i>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>

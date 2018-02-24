@@ -1,0 +1,60 @@
+<div class="modal fade" [id]="modalName" tabindex="-1" role="dialog"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Rejoindre une partie</h5>
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="game">
+          <h5>Règle : {{ game.rule.name }}</h5>
+          <ul>
+            <li>
+              Nombre points de vie des joueurs : {{ game.rule.players_health }}
+            </li>
+            <li>
+              Nombre de cartes dans le deck : {{ game.rule.cards_in_deck }}
+            </li>
+            <li>
+              Nombre de cartes dans la première main : {{ game.rule.cards_to_begin }}
+            </li>
+            <li>
+              Nombre de cartes à tirer au début de son tour : {{ game.rule.cards_to_draw }}
+            </li>
+          </ul>
+          <div class="form-group">
+            <label for="deck">Deck</label>
+            <select [(ngModel)]="deckId"
+                    name="deck"
+                    id="deck"
+                    class="custom-select"
+                    required>
+              <option selected></option>
+              <ng-container *ngFor="let deck of decks">
+                <ng-container *ngIf="isDeckRespectingRule(deck)">
+                  <option [value]="deck.id">
+                    {{ deck.name }}
+                  </option>
+                </ng-container>
+              </ng-container>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Fermer
+        </button>
+        <button (click)="onJoin()"
+                type="button"
+                class="btn btn-primary">
+          Rejoindre
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

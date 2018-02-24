@@ -1,0 +1,1 @@
+INSERT INTO django_session (session_key, session_data, expire_date) VALUES ('9nz291z2t6pzovwsyjhxl74gdo9y1yrr', 'NTgyMzg4YmJkNTYwYzU5OTYyZjVmMTI2MjIyZDAxZjI1MjU0Yzg1MDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJlMzQ5M2FlOGEyZTI2ZDIzYmZkMjkxMmM4YzM1ODQ4MWE4NmE5YWFkIn0=', '2017-12-22');

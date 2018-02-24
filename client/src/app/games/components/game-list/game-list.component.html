@@ -1,0 +1,37 @@
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Joueur</th>
+    <th scope="col">Règle</th>
+    <th scope="col" class="actions"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let game of games">
+    <ng-container *ngIf="game.owner.id !== user">
+      <tr *ngIf="!game.opponent">
+        <th scope="row">{{ game.id }}</th>
+        <td>{{ game.owner.username }}</td>
+        <td>{{ game.rule.name }}</td>
+        <td class="actions">
+          <button (click)="gameSelected = game"
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  data-toggle="modal"
+                  data-target="#joinGameModal">
+            <i class="fa fa-gamepad"></i>
+          </button>
+        </td>
+      </tr>
+    </ng-container>
+  </ng-container>
+  </tbody>
+</table>
+
+<app-game-join-modal modalName="joinGameModal"
+                     [decks]="decks"
+                     [rules]="rules"
+                     [game]="gameSelected"
+                     (join)="onJoin($event)">
+</app-game-join-modal>

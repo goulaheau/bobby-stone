@@ -1,0 +1,34 @@
+<table class="table">
+  <thead class="thead-light">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Nom</th>
+    <th scope="col">Coût</th>
+    <th scope="col" class="actions"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let card of cards">
+    <th scope="row">{{ card.id }}</th>
+    <td>{{ card.name }}</td>
+    <td>{{ card.cost }}</td>
+    <td class="actions">
+      <button
+        *ngIf="number(card.id) === 0"
+        (click)="modifyNumber('+', card)"
+        [disabled]="!editable"
+        type="button" class="btn btn-sm btn-outline-primary">
+        <i class="fa fa-plus"></i>
+      </button>
+
+      <button
+        *ngIf="number(card.id) > 0"
+        (click)="modifyNumber('-', card)"
+        [disabled]="!editable"
+        type="button" class="btn btn-sm btn-outline-success">
+        <i class="fa fa-check"></i>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>

@@ -1,0 +1,19 @@
+<div class="container my-3">
+  <div class="row">
+    <div class="col">
+      <h2>
+        Mes decks
+        <a
+          routerLink="/decks/form"
+          class="btn btn-sm btn-outline-primary">
+          <i class="fa fa-plus"></i>
+        </a>
+      </h2>
+
+      <app-deck-list
+        [decks]="decks"
+        (delete)="onDelete($event)">
+      </app-deck-list>
+    </div>
+  </div>
+</div>

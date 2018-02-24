@@ -1,0 +1,2 @@
+INSERT INTO app_card (id, name, cost, picture, health, effect, type_id, strengh) VALUES (1, 'JeremyYoung', 1, null, 1, 'Nothing', 1, 0);
+INSERT INTO app_card (id, name, cost, picture, health, effect, type_id, strengh) VALUES (2, 'Simon', 1, null, 2, 'Dj', 1, 8);

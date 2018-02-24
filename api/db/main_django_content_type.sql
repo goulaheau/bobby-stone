@@ -1,0 +1,10 @@
+INSERT INTO django_content_type (id, app_label, model) VALUES (1, 'admin', 'logentry');
+INSERT INTO django_content_type (id, app_label, model) VALUES (2, 'auth', 'permission');
+INSERT INTO django_content_type (id, app_label, model) VALUES (3, 'auth', 'group');
+INSERT INTO django_content_type (id, app_label, model) VALUES (4, 'contenttypes', 'contenttype');
+INSERT INTO django_content_type (id, app_label, model) VALUES (5, 'sessions', 'session');
+INSERT INTO django_content_type (id, app_label, model) VALUES (6, 'app', 'user');
+INSERT INTO django_content_type (id, app_label, model) VALUES (7, 'app', 'card');
+INSERT INTO django_content_type (id, app_label, model) VALUES (8, 'app', 'cardtype');
+INSERT INTO django_content_type (id, app_label, model) VALUES (9, 'app', 'deck');
+INSERT INTO django_content_type (id, app_label, model) VALUES (10, 'authtoken', 'token');

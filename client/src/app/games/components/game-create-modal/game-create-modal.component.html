@@ -1,0 +1,80 @@
+<div class="modal fade" [id]="modalName" tabindex="-1" role="dialog"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Créer une partie</h5>
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="rule">Règle</label>
+            <select [(ngModel)]="ruleId"
+                    name="rule"
+                    id="rule"
+                    class="custom-select"
+                    required>
+              <option selected></option>
+              <option *ngFor="let rule of rules"
+                      [value]="rule.id">
+                {{ rule.name }}
+              </option>
+            </select>
+          </div>
+          <ng-container *ngIf="ruleId">
+            <ng-container *ngFor="let rule of rules">
+              <ng-container *ngIf="rule.id == ruleId">
+                <ul>
+                  <li>
+                    Nombre points de vie des joueurs : {{ rule.players_health }}
+                  </li>
+                  <li>
+                    Nombre de cartes dans le deck : {{ rule.cards_in_deck }}
+                  </li>
+                  <li>
+                    Nombre de cartes dans la première main : {{ rule.cards_to_begin }}
+                  </li>
+                  <li>
+                    Nombre de cartes à tirer au début de son tour : {{ rule.cards_to_draw }}
+                  </li>
+                </ul>
+              </ng-container>
+            </ng-container>
+            <div class="form-group">
+              <label for="deck">Deck</label>
+              <select [(ngModel)]="deckId"
+                      name="deck"
+                      id="deck"
+                      class="custom-select"
+                      required>
+                <option selected></option>
+                <ng-container *ngFor="let deck of decks">
+                  <ng-container *ngIf="isDeckRespectingRule(deck)">
+                    <option [value]="deck.id">
+                      {{ deck.name }}
+                    </option>
+                  </ng-container>
+                </ng-container>
+              </select>
+            </div>
+          </ng-container>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Fermer
+        </button>
+        <button *ngIf="!game"
+                (click)="onCreate()"
+                type="button"
+                class="btn btn-primary">
+          Créer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

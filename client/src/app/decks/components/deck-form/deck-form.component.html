@@ -1,0 +1,20 @@
+<h2>
+  {{ !deck.id ? 'Créer un deck' : 'Modifier ' + deck.name }}
+</h2>
+
+<form (submit)="onSubmit()" class="mb-3">
+  <div class="form-group">
+    <label for="name">Nom</label>
+    <input
+      [(ngModel)]="deck.name"
+      [disabled]="userId !== deck.user"
+      type="text" id="name" name="name" class="form-control">
+  </div>
+  <button *ngIf="userId === deck.user" class="btn btn-primary">Enregistrer</button>
+</form>
+
+<app-card-list
+  (editable)="userId === deck.user"
+  [cards]="cards"
+  [deck]="deck">
+</app-card-list>

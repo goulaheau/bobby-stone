@@ -1,0 +1,244 @@
+<div *ngIf="!game?.player_turn"
+     class="page-waiting my-3">
+  En attente d'un adversaire ...
+</div>
+
+<div *ngIf="game?.player_turn"
+     class="page">
+  <div class="board-aside">
+    Tour de<br>
+    {{ game.player_turn == game.owner.id ? game.owner.username :
+    game.opponent.username }}
+  </div>
+
+  <div class="board">
+    <ng-container>
+      <div pDroppable="attack"
+           (onDrop)="dropAttacker('user')"
+           class="row" style="height: 10%;">
+        <div class="col">
+          <ng-container *ngIf="user.id === game.owner.id">
+            <span>{{ game.opponent_health }} Vie</span>
+            <span>{{ game.opponent.username }}</span>
+            <span>{{ game.opponent_mana }} Mana</span>
+          </ng-container>
+          <ng-container *ngIf="user.id !== game.owner.id">
+            <span>{{ game.owner_health }} Vie</span>
+            <span>{{ game.owner.username }}</span>
+            <span>{{ game.owner_mana }} Mana</span>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="row" style="height: 20%;">
+        <ng-container *ngIf="user.id === game.owner.id">
+          <div *ngFor="let card of game.opponent_hand_cards" class="col">
+            <div class="card">
+              Carte retournée
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="user.id !== game.owner.id">
+          <div *ngFor="let card of game.owner_hand_cards" class="col">
+            <div class="card">
+              Carte retournée
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row" style="height: 20%;">
+        <ng-container *ngIf="user.id === game.owner.id">
+          <div *ngFor="let cardValue of game.opponent_board_card_values"
+               pDroppable="attack"
+               (onDrop)="dropAttacker(cardValue)"
+               class="col">
+            <div class="card">
+              {{ cardValue.card?.name }}<br>
+              {{ cardValue.card?.cost }} Mana<br>
+              {{ cardValue.strength }} Atk<br>
+              {{ cardValue.health }} Vie
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="user.id !== game.owner.id">
+          <div *ngFor="let cardValue of game.owner_board_card_values"
+               pDroppable="attack"
+               (onDrop)="dropAttacker(cardValue)"
+               class="col">
+            <div class="card">
+              {{ cardValue.card?.name }}<br>
+              {{ cardValue.card?.cost }} Mana<br>
+              {{ cardValue.strength }} Atk<br>
+              {{ cardValue.health }} Vie
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row"
+           pDroppable="play_card"
+           (onDrop)="dropCardToPlay()"
+           style="height: 20%;">
+        <ng-container *ngIf="user.id === game.owner.id">
+          <div *ngFor="let cardValue of game.owner_board_card_values"
+               class="col">
+            <ng-container *ngIf="cardValue.can_attack">
+              <div pDraggable="attack"
+                   (onDragStart)="dragAttacker(cardValue)"
+                   class="card">
+                {{ cardValue.card?.name }}<br>
+                {{ cardValue.card?.cost }} Mana<br>
+                {{ cardValue.strength }} Atk<br>
+                {{ cardValue.health }} Vie
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!cardValue.can_attack">
+              <div class="card">
+                {{ cardValue.card?.name }}<br>
+                {{ cardValue.card?.cost }} Mana<br>
+                {{ cardValue.strength }} Atk<br>
+                {{ cardValue.health }} Vie
+              </div>
+            </ng-container>
+          </div>
+          <div class="col">
+            <div class="card">
+              {{ game.owner_graveyard_cards.length }}
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="user.id !== game.owner.id">
+          <div *ngFor="let cardValue of game.opponent_board_card_values"
+               class="col">
+            <ng-container *ngIf="cardValue.can_attack">
+              <div pDraggable="attack"
+                   (onDragStart)="dragAttacker(cardValue)"
+                   class="card">
+                {{ cardValue.card?.name }}<br>
+                {{ cardValue.card?.cost }} Mana<br>
+                {{ cardValue.strength }} Atk<br>
+                {{ cardValue.health }} Vie
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!cardValue.can_attack">
+              <div class="card">
+                {{ cardValue.card?.name }}<br>
+                {{ cardValue.card?.cost }} Mana<br>
+                {{ cardValue.strength }} Atk<br>
+                {{ cardValue.health }} Vie
+              </div>
+            </ng-container>
+          </div>
+          <div class="col">
+            <div class="card">
+              {{ game.opponent_graveyard_cards.length }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row" style="height: 20%;">
+        <ng-container *ngIf="user.id === game.owner.id">
+          <div *ngFor="let card of game.owner_hand_cards"
+               class="col">
+            <ng-container *ngIf="canPlayCard(card)">
+              <div pDraggable="play_card"
+                   (onDragStart)="dragCardToPlay(card)"
+                   class="card">
+                {{ card.name }}<br>
+                {{ card.cost }} Mana<br>
+                {{ card.strength }} Atk<br>
+                {{ card.health }} Vie
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!canPlayCard(card)">
+              <div class="card">
+                {{ card.name }}<br>
+                {{ card.cost }} Mana<br>
+                {{ card.strength }} Atk<br>
+                {{ card.health }} Vie
+              </div>
+            </ng-container>
+          </div>
+          <div class="col">
+            <div class="card">
+              {{ game.owner_deck_cards.length }}
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="user.id !== game.owner.id">
+          <div *ngFor="let card of game.opponent_hand_cards"
+               class="col">
+            <ng-container *ngIf="canPlayCard(card)">
+              <div pDraggable="play_card"
+                   (onDragStart)="dragCardToPlay(card)"
+                   class="card">
+                {{ card.name }}<br>
+                {{ card.cost }} Mana<br>
+                {{ card.strength }} Atk<br>
+                {{ card.health }} Vie
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!canPlayCard(card)">
+              <div class="card">
+                {{ card.name }}<br>
+                {{ card.cost }} Mana<br>
+                {{ card.strength }} Atk<br>
+                {{ card.health }} Vie
+              </div>
+            </ng-container>
+          </div>
+          <div class="col">
+            <div class="card">
+              {{ game.opponent_deck_cards.length }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row" style="height: 10%;">
+        <div class="col">
+          <ng-container *ngIf="user.id === game.owner.id">
+            <span>{{ game.owner_health }} Vie</span>
+            <span>{{ game.owner.username }}</span>
+            <span>{{ game.owner_mana }} Mana</span>
+          </ng-container>
+          <ng-container *ngIf="user.id !== game.owner.id">
+            <span>{{ game.opponent_health }} Vie </span>
+            <span>{{ game.opponent.username }}</span>
+            <span>{{ game.opponent_mana }} Mana</span>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="board-aside">
+    <button *ngIf="user.id === game.player_turn"
+            (click)="endTurn()"
+            type="button"
+            class="btn btn-sm">
+      Finir le tour
+    </button>
+  </div>
+</div>
+
+<div class="modal fade" id="modalWinner" tabindex="-1" role="dialog"
+     aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Partie finie</h5>
+      </div>
+      <div class="modal-body">
+        Gagnant : {{ winner?.username }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">
+          Accueil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

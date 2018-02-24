@@ -1,0 +1,37 @@
+<div class="container my-3">
+  <div class="row">
+    <div class="col">
+      <h2>Les règles</h2>
+
+      <h3>La base</h3>
+
+      <p>
+        Ce jeu de carte se joue tour par tour. Durant son tour, le joueur peut poser des monstres sur sa partie de terrain ou lancer des sorts. <br>
+        Cependant, chacune des cartes jouées a un coût en mana. <br>
+        Les monstres invoqués ne peuvent pas attaquer qu'au tour d'après et ils peuvent attaquer soit les monstres de l'adversaire soit l'adversaire lui-même et ainsi lui faire baisser ses points de vie. <br>
+        Le perdant est le joueur n'ayant plus de points de vie en premier.
+      </p>
+
+      <h3>Les variantes</h3>
+
+      <ng-container *ngFor="let rule of rules">
+        <h4>{{ rule.name }}</h4>
+
+        <ul>
+          <li>
+            Nombre points de vie des joueurs : {{ rule.players_health }}
+          </li>
+          <li>
+            Nombre de cartes dans le deck : {{ rule.cards_in_deck }}
+          </li>
+          <li>
+            Nombre de cartes dans la première main : {{ rule.cards_to_begin }}
+          </li>
+          <li>
+            Nombre de cartes à tirer au début de son tour : {{ rule.cards_to_draw }}
+          </li>
+        </ul>
+      </ng-container>
+    </div>
+  </div>
+</div>

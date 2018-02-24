@@ -1,0 +1,1 @@
+INSERT INTO app_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, name) VALUES (1, 'pbkdf2_sha256$100000$VpalymyJDkTY$31oMIkU68ERz9lK0M3Bjb/xsmgIAOXK5tBtQseWrfRs=', '2017-12-08', 1, 'bobby', '', '', '', 1, 1, '2017-12-08', '');

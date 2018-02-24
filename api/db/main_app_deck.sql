@@ -1,0 +1,1 @@
+INSERT INTO app_deck (id, name) VALUES (1, 'BobbyDeck');

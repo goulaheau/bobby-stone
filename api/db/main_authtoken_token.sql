@@ -1,0 +1,1 @@
+INSERT INTO authtoken_token (key, created, user_id) VALUES ('f9f6cd7bb1505d129046f5e2925f59598bd07226', '2017-12-08', 1);

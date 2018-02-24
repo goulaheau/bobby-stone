@@ -1,0 +1,43 @@
+:host {
+  .page-waiting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 56px - 2rem);
+  }
+
+  .page {
+    margin: 15px;
+    height: calc(100% - 56px - 2rem);
+    display: flex;
+
+    .board-aside {
+      height: 100%;
+      width: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .board {
+      margin: 0 15px;
+      height: 100%;
+      width: calc(100% - 200px);
+
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      span {
+        margin: 0 10px;
+      }
+    }
+
+  }
+
+  .row {
+    border: 1px solid #000;
+  }
+}
