@@ -1,7 +1,8 @@
 import random
 import math
+from django.utils import timezone
 
-from app.models import Card, CardValue
+from app.models import Card, CardValue, GameLog, GameLogAction
 from app.serializers import CardSerializer, CardEffectSerializer
 
 
@@ -51,6 +52,8 @@ def action_init(game, user, payload):
 
     game.save()
 
+    log_init(game)
+
     return {
         'action': 'init',
         'payload': {
@@ -59,7 +62,17 @@ def action_init(game, user, payload):
     }
 
 
+def log_init(game):
+    game_log = GameLog(
+        game=game,
+        round_number=1
+    )
+
+    game_log.save()
+
+
 def action_play_card(game, user, payload):
+    log = {}
     success = True
     card_to_play = None
 
@@ -75,6 +88,7 @@ def action_play_card(game, user, payload):
                 success = False
 
             if success:
+                log['card_to_play'] = card_to_play
                 if card_to_play.cost > game.owner_mana:
                     success = False
                 else:
@@ -126,6 +140,7 @@ def action_play_card(game, user, payload):
                 success = False
 
             if success:
+                log['card_to_play'] = card_to_play
                 if card_to_play.cost > game.opponent_mana:
                     success = False
                 else:
@@ -169,6 +184,9 @@ def action_play_card(game, user, payload):
                         game.opponent_board_card_values.add(card_value)
                     game.save()
 
+    if success:
+        log_play_card(game, user, payload, log)
+
     return {
         'action': 'play_card',
         'payload': {
@@ -179,7 +197,26 @@ def action_play_card(game, user, payload):
     }
 
 
+def log_play_card(game, user, payload, log):
+    game_log = GameLog.objects.get(game=game)
+    game_log.end_game = timezone.now()
+    game_log.save()
+
+    action = user.username + ' a joué ' + log['card_to_play'].name + '.'
+
+    game_log_action = GameLogAction(
+        game_log=game_log,
+        turn=game.turn,
+        user=user,
+        action=action,
+        payload=payload
+    )
+
+    game_log_action.save()
+
+
 def action_attack(game, user, payload):
+    log = {}
     success = True
     attacker = None
     victim = None
@@ -201,10 +238,19 @@ def action_attack(game, user, payload):
                     if attacker.can_attack is False:
                         success = False
                     else:
+                        log['attacker'] = attacker
+                        log['victim'] = game.opponent
+                        log['killed'] = []
+                        log['winner'] = None
+                        log['loser'] = None
+
                         attacker.can_attack = False
                         attacker.save()
 
                         game.opponent_health -= attacker.strength
+                        if game.opponent_health <= 0:
+                            log['winner'] = game.owner
+                            log['loser'] = game.opponent
                         game.save()
             else:
                 try:
@@ -218,10 +264,19 @@ def action_attack(game, user, payload):
                     if attacker.can_attack is False:
                         success = False
                     else:
+                        log['attacker'] = attacker
+                        log['victim'] = game.owner
+                        log['killed'] = []
+                        log['winner'] = None
+                        log['loser'] = None
+
                         attacker.can_attack = False
                         attacker.save()
 
                         game.owner_health -= attacker.strength
+                        if game.owner_health <= 0:
+                            log['winner'] = game.opponent
+                            log['loser'] = game.owner
                         game.save()
         # Attack Card
         else:
@@ -242,10 +297,17 @@ def action_attack(game, user, payload):
                     if attacker.can_attack is False:
                         success = False
                     else:
+                        log['attacker'] = attacker
+                        log['victim'] = victim
+                        log['killed'] = []
+                        log['winner'] = None
+                        log['loser'] = None
+
                         victim.health -= attacker.strength
                         attacker.health -= victim.strength
 
                         if attacker.health <= 0:
+                            log['killed'].append(attacker)
                             game.owner_board_card_values.remove(attacker)
                             game.owner_graveyard_cards.add(attacker.card)
                             game.save()
@@ -254,6 +316,7 @@ def action_attack(game, user, payload):
                             attacker.can_attack = False
                             attacker.save()
                         if victim.health <= 0:
+                            log['killed'].append(victim)
                             game.opponent_board_card_values.remove(victim)
                             game.opponent_graveyard_cards.add(victim.card)
                             game.save()
@@ -277,10 +340,17 @@ def action_attack(game, user, payload):
                     if attacker.can_attack is False:
                         success = False
                     else:
+                        log['attacker'] = attacker
+                        log['victim'] = victim
+                        log['killed'] = []
+                        log['winner'] = None
+                        log['loser'] = None
+
                         victim.health -= attacker.strength
                         attacker.health -= victim.strength
 
                         if attacker.health <= 0:
+                            log['killed'].append(attacker)
                             game.opponent_board_card_values.remove(attacker)
                             game.opponent_graveyard_cards.add(attacker.card)
                             game.save()
@@ -289,12 +359,16 @@ def action_attack(game, user, payload):
                             attacker.can_attack = False
                             attacker.save()
                         if victim.health <= 0:
+                            log['killed'].append(victim)
                             game.owner_board_card_values.remove(victim)
                             game.owner_graveyard_cards.add(victim.card)
                             game.save()
                             victim.delete()
                         else:
                             victim.save()
+
+    if success:
+        log_attack(game, user, payload, log)
 
     return {
         'action': 'attack',
@@ -305,6 +379,37 @@ def action_attack(game, user, payload):
             'victim': payload['victim'],
         }
     }
+
+
+def log_attack(game, user, payload, log):
+    game_log = GameLog.objects.get(game=game)
+    game_log.end_game = timezone.now()
+    if log['winner'] is not None:
+        game_log.winner = log['winner']
+        game_log.loser = log['loser']
+    game_log.save()
+
+    if payload['victim'] == 'user':
+        victim = log['victim'].username
+    else:
+        victim = log['victim'].card.name
+
+    action = user.username + ' a attaqué ' + victim + ' avec ' + log['attacker'].card.name + '.'
+    if len(log['killed']) > 0:
+        for killed in log['killed']:
+            action += ' ' + killed.card.name + ' est mort.'
+    if log['winner'] is not None:
+        action += ' ' + log['winner'].username + ' a gagné !'
+
+    game_log_action = GameLogAction(
+        game_log=game_log,
+        turn=game.turn,
+        user=user,
+        action=action,
+        payload=payload
+    )
+
+    game_log_action.save()
 
 
 def action_end_turn(game, user, payload):
@@ -358,6 +463,8 @@ def action_end_turn(game, user, payload):
     }
 
     if success:
+        log_end_turn(game)
+
         cards_drawn_serialized = []
         for card_drawn in cards_drawn:
             card_drawn_serialized = CardSerializer(card_drawn).data
@@ -367,6 +474,13 @@ def action_end_turn(game, user, payload):
         res['payload']['cards_drawn'] = cards_drawn_serialized
 
     return res
+
+
+def log_end_turn(game):
+    game_log = GameLog.objects.get(game=game)
+    game_log.end_game = timezone.now()
+    game_log.round_number = game.turn
+    game_log.save()
 
 
 def draw_card(deck_cards, hand_cards):

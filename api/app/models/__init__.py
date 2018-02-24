@@ -10,8 +10,10 @@ from .card_effect_admin import CardEffectAdmin
 from .deck import Deck
 from .deck_admin import DeckAdmin
 from .game import Game
+from .game_admin import GameAdmin
 from .game_log import GameLog
 from .game_log_action import GameLogAction
+from .game_log_action_admin import GameLogActionAdmin
 from .game_log_admin import GameLogAdmin
 from .card_value import CardValue
 from .rule import Rule

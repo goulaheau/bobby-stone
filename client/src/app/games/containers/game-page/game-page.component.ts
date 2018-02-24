@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router }       from '@angular/router';
-import { Message }                      from '../../../core/models/message';
-import { GamesService }                 from '../../../core/services/games.service';
-import { User }                         from '../../../auth/models/user';
-import { AuthService }                  from '../../../auth/services/auth.service';
-import { Card }                         from '../../../decks/models/card';
-import { CardValue }                    from '../../models/card-value';
-import { Game }                         from '../../models/game';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Message} from '../../../core/models/message';
+import {GamesService} from '../../../core/services/games.service';
+import {User} from '../../../auth/models/user';
+import {AuthService} from '../../../auth/services/auth.service';
+import {Card} from '../../../decks/models/card';
+import {CardValue} from '../../models/card-value';
+import {Game} from '../../models/game';
 
 declare let $: any;
 
@@ -24,11 +24,10 @@ export class GamePageComponent implements OnInit, OnDestroy {
   attacker: CardValue | null;
   winner: User;
 
-  constructor(
-    private route: ActivatedRoute,
-    private gamesService: GamesService,
-    private authService: AuthService,
-    private router: Router) {
+  constructor(private route: ActivatedRoute,
+              private gamesService: GamesService,
+              private authService: AuthService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -39,8 +38,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
           this.game_id = +params['id'];
 
           if (this.game_id) {
-            this.socket           = this.gamesService.connect(this.game_id, this.user.id);
-            this.socket.onopen    = this.initGame.bind(this);
+            this.socket = this.gamesService.connect(this.game_id, this.user.id);
+            this.socket.onopen = this.initGame.bind(this);
             this.socket.onmessage = this.onMessage.bind(this);
           }
         });
@@ -69,7 +68,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
         if (this.game.player_turn === null
           && this.game.opponent === this.user.id
         ) {
-          this.sendMessage({ action: 'init', payload: null });
+          this.sendMessage({action: 'init', payload: null});
         }
 
         this.checkIfFinished();
@@ -111,14 +110,14 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   // Card to play
   canPlayCard(card: Card): boolean {
-    if (this.user.id === this.game.player_turn) {
-      if (this.user.id === this.game.owner.id) {
-        return card.cost <= this.game.owner_mana;
-      } else {
-        return card.cost <= this.game.opponent_mana;
-      }
-    } else {
+    if (this.user.id !== this.game.player_turn) {
       return false;
+    }
+
+    if (this.user.id === this.game.owner.id) {
+      return card.cost <= this.game.owner_mana;
+    } else {
+      return card.cost <= this.game.opponent_mana;
     }
   }
 
@@ -185,12 +184,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
                 this.game.owner_board_card_values = this.game.owner_board_card_values.filter(
                   card => card.card.id !== cardValue.card.id,
                 );
-                this.game.owner_graveyard_cards   = [...this.game.owner_graveyard_cards, cardValue.card];
+                this.game.owner_graveyard_cards = [...this.game.owner_graveyard_cards, cardValue.card];
               } else {
                 this.game.opponent_board_card_values = this.game.opponent_board_card_values.filter(
                   card => card.card.id !== cardValue.card.id,
                 );
-                this.game.opponent_graveyard_cards   = [...this.game.opponent_graveyard_cards, cardValue.card];
+                this.game.opponent_graveyard_cards = [...this.game.opponent_graveyard_cards, cardValue.card];
               }
             }
           });
@@ -242,19 +241,17 @@ export class GamePageComponent implements OnInit, OnDestroy {
               cardValue.health += effect.quantity;
             }
 
-            console.log(cardValue.health);
-
             if (cardValue.health <= 0) {
               if (effect.player_affected === 'self') {
                 this.game.opponent_board_card_values = this.game.opponent_board_card_values.filter(
                   card => card.card.id !== cardValue.card.id,
                 );
-                this.game.opponent_graveyard_cards   = [...this.game.opponent_graveyard_cards, cardValue.card];
+                this.game.opponent_graveyard_cards = [...this.game.opponent_graveyard_cards, cardValue.card];
               } else {
                 this.game.owner_board_card_values = this.game.owner_board_card_values.filter(
                   card => card.card.id !== cardValue.card.id,
                 );
-                this.game.owner_graveyard_cards   = [...this.game.owner_graveyard_cards, cardValue.card];
+                this.game.owner_graveyard_cards = [...this.game.owner_graveyard_cards, cardValue.card];
               }
             }
           });
@@ -279,6 +276,18 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   // Attack
+  canAttack(cardValue: CardValue): boolean {
+    if (this.user.id !== this.game.player_turn) {
+      return false;
+    }
+
+    if (this.user.id !== this.game.owner.id) {
+      return false;
+    }
+
+    return cardValue.can_attack;
+  }
+
   dragAttacker(attacker: CardValue): void {
     this.attacker = attacker;
   }
@@ -309,7 +318,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   actionAttack(message: Message): void {
     let attacker = null;
-    let victim   = null;
+    let victim = null;
 
     if (message.payload.victim === 'user') {
       if (message.payload.emitter === this.game.owner.id) {
@@ -427,7 +436,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   actionEndTurn(message: Message): void {
     this.game.turn += 1;
     if (message.payload.emitter === this.game.owner.id) {
-      this.game.player_turn   = this.game.opponent.id;
+      this.game.player_turn = this.game.opponent.id;
       this.game.opponent_mana = Math.ceil(this.game.turn / 2);
 
       this.game.opponent_board_card_values.forEach(
@@ -446,7 +455,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
       });
     } else {
       this.game.player_turn = this.game.owner.id;
-      this.game.owner_mana  = Math.ceil(this.game.turn / 2);
+      this.game.owner_mana = Math.ceil(this.game.turn / 2);
 
       this.game.owner_board_card_values.forEach(
         cardValue => cardValue.can_attack = true,

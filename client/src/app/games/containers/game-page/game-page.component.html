@@ -83,7 +83,7 @@
         <ng-container *ngIf="user.id === game.owner.id">
           <div *ngFor="let cardValue of game.owner_board_card_values"
                class="col">
-            <ng-container *ngIf="cardValue.can_attack">
+            <ng-container *ngIf="canAttack(cardValue)">
               <div pDraggable="attack"
                    (onDragStart)="dragAttacker(cardValue)"
                    class="card">
@@ -93,7 +93,7 @@
                 {{ cardValue.health }} Vie
               </div>
             </ng-container>
-            <ng-container *ngIf="!cardValue.can_attack">
+            <ng-container *ngIf="!canAttack(cardValue)">
               <div class="card">
                 {{ cardValue.card?.name }}<br>
                 {{ cardValue.card?.cost }} Mana<br>
