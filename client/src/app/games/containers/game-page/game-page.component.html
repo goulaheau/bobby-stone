@@ -32,16 +32,18 @@
 
       <div class="row" style="height: 20%;">
         <ng-container *ngIf="user.id === game.owner.id">
-          <div *ngFor="let card of game.opponent_hand_cards" class="col">
-            <div class="card">
-              Carte retournée
+          <div *ngFor="let card of game.opponent_hand_cards"
+               class="col p-0">
+            <div class="bs-card"
+                 style="background-image: url('/assets/img/card-back.png')">
             </div>
           </div>
         </ng-container>
         <ng-container *ngIf="user.id !== game.owner.id">
-          <div *ngFor="let card of game.owner_hand_cards" class="col">
-            <div class="card">
-              Carte retournée
+          <div *ngFor="let card of game.owner_hand_cards"
+               class="col p-0">
+            <div class="bs-card"
+                 style="background-image: url('/assets/img/card-back.png')">
             </div>
           </div>
         </ng-container>
@@ -52,12 +54,22 @@
           <div *ngFor="let cardValue of game.opponent_board_card_values"
                pDroppable="attack"
                (onDrop)="dropAttacker(cardValue)"
-               class="col">
-            <div class="card">
-              {{ cardValue.card?.name }}<br>
-              {{ cardValue.card?.cost }} Mana<br>
-              {{ cardValue.strength }} Atk<br>
-              {{ cardValue.health }} Vie
+               class="col p-0">
+            <div (mouseenter)="hoverCardValueOpponent(cardValue)"
+                 (mouseleave)="hoverCardValueOpponent(null)"
+                 [ngStyle]="{'background-image': 'url(' + cardValue.card?.picture + ')'}"
+                 class="bs-card">
+              <span class="cost">{{ cardValue.card?.cost }}</span>
+              <span class="strength">{{ cardValue.strength }}</span>
+              <span class="health">{{ cardValue.health }}</span>
+              <div class="name">
+                {{ cardValue.card?.name }}
+              </div>
+              <div *ngIf="cardValue.card?.effect"
+                   class="effect">
+                <b>{{ cardValue.card.effect.name }} : </b><br>
+                {{ cardValue.card.effect.description }}
+              </div>
             </div>
           </div>
         </ng-container>
@@ -65,12 +77,22 @@
           <div *ngFor="let cardValue of game.owner_board_card_values"
                pDroppable="attack"
                (onDrop)="dropAttacker(cardValue)"
-               class="col">
-            <div class="card">
-              {{ cardValue.card?.name }}<br>
-              {{ cardValue.card?.cost }} Mana<br>
-              {{ cardValue.strength }} Atk<br>
-              {{ cardValue.health }} Vie
+               class="col p-0">
+            <div (mouseenter)="hoverCardValueOpponent(cardValue)"
+                 (mouseleave)="hoverCardValueOpponent(null)"
+                 [ngStyle]="{'background-image': 'url(' + cardValue.card?.picture + ')'}"
+                 class="bs-card">
+              <span class="cost">{{ cardValue.card?.cost }}</span>
+              <span class="strength">{{ cardValue.strength }}</span>
+              <span class="health">{{ cardValue.health }}</span>
+              <div class="name">
+                {{ cardValue.card?.name }}
+              </div>
+              <div *ngIf="cardValue.card?.effect"
+                   class="effect">
+                <b>{{ cardValue.card.effect.name }} : </b><br>
+                {{ cardValue.card.effect.description }}
+              </div>
             </div>
           </div>
         </ng-container>
@@ -82,23 +104,43 @@
            style="height: 20%;">
         <ng-container *ngIf="user.id === game.owner.id">
           <div *ngFor="let cardValue of game.owner_board_card_values"
-               class="col">
+               class="col p-0">
             <ng-container *ngIf="canAttack(cardValue)">
               <div pDraggable="attack"
                    (onDragStart)="dragAttacker(cardValue)"
-                   class="card">
-                {{ cardValue.card?.name }}<br>
-                {{ cardValue.card?.cost }} Mana<br>
-                {{ cardValue.strength }} Atk<br>
-                {{ cardValue.health }} Vie
+                   (mouseenter)="hoverCardValueSelf(cardValue)"
+                   (mouseleave)="hoverCardValueSelf(null)"
+                   [ngStyle]="{'background-image': 'url(' + cardValue.card?.picture + ')'}"
+                   class="bs-card">
+                <span class="cost">{{ cardValue.card?.cost }}</span>
+                <span class="strength">{{ cardValue.strength }}</span>
+                <span class="health">{{ cardValue.health }}</span>
+                <div class="name">
+                  {{ cardValue.card?.name }}
+                </div>
+                <div *ngIf="cardValue.card?.effect"
+                     class="effect">
+                  <b>{{ cardValue.card.effect.name }} : </b><br>
+                  {{ cardValue.card.effect.description }}
+                </div>
               </div>
             </ng-container>
             <ng-container *ngIf="!canAttack(cardValue)">
-              <div class="card">
-                {{ cardValue.card?.name }}<br>
-                {{ cardValue.card?.cost }} Mana<br>
-                {{ cardValue.strength }} Atk<br>
-                {{ cardValue.health }} Vie
+              <div (mouseenter)="hoverCardValueSelf(cardValue)"
+                   (mouseleave)="hoverCardValueSelf(null)"
+                   [ngStyle]="{'background-image': 'url(' + cardValue.card?.picture + ')'}"
+                   class="bs-card">
+                <span class="cost">{{ cardValue.card?.cost }}</span>
+                <span class="strength">{{ cardValue.strength }}</span>
+                <span class="health">{{ cardValue.health }}</span>
+                <div class="name">
+                  {{ cardValue.card?.name }}
+                </div>
+                <div *ngIf="cardValue.card?.effect"
+                     class="effect">
+                  <b>{{ cardValue.card.effect.name }} : </b><br>
+                  {{ cardValue.card.effect.description }}
+                </div>
               </div>
             </ng-container>
           </div>
@@ -110,23 +152,43 @@
         </ng-container>
         <ng-container *ngIf="user.id !== game.owner.id">
           <div *ngFor="let cardValue of game.opponent_board_card_values"
-               class="col">
+               class="col p-0">
             <ng-container *ngIf="cardValue.can_attack">
               <div pDraggable="attack"
                    (onDragStart)="dragAttacker(cardValue)"
-                   class="card">
-                {{ cardValue.card?.name }}<br>
-                {{ cardValue.card?.cost }} Mana<br>
-                {{ cardValue.strength }} Atk<br>
-                {{ cardValue.health }} Vie
+                   (mouseenter)="hoverCardValueSelf(cardValue)"
+                   (mouseleave)="hoverCardValueSelf(null)"
+                   [ngStyle]="{'background-image': 'url(' + cardValue.card?.picture + ')'}"
+                   class="bs-card">
+                <span class="cost">{{ cardValue.card?.cost }}</span>
+                <span class="strength">{{ cardValue.strength }}</span>
+                <span class="health">{{ cardValue.health }}</span>
+                <div class="name">
+                  {{ cardValue.card?.name }}
+                </div>
+                <div *ngIf="cardValue.card?.effect"
+                     class="effect">
+                  <b>{{ cardValue.card.effect.name }} : </b><br>
+                  {{ cardValue.card.effect.description }}
+                </div>
               </div>
             </ng-container>
             <ng-container *ngIf="!cardValue.can_attack">
-              <div class="card">
-                {{ cardValue.card?.name }}<br>
-                {{ cardValue.card?.cost }} Mana<br>
-                {{ cardValue.strength }} Atk<br>
-                {{ cardValue.health }} Vie
+              <div (mouseenter)="hoverCardValueSelf(cardValue)"
+                   (mouseleave)="hoverCardValueSelf(null)"
+                   [ngStyle]="{'background-image': 'url(' + cardValue.card?.picture + ')'}"
+                   class="bs-card">
+                <span class="cost">{{ cardValue.card?.cost }}</span>
+                <span class="strength">{{ cardValue.strength }}</span>
+                <span class="health">{{ cardValue.health }}</span>
+                <div class="name">
+                  {{ cardValue.card?.name }}
+                </div>
+                <div *ngIf="cardValue.card?.effect"
+                     class="effect">
+                  <b>{{ cardValue.card.effect.name }} : </b><br>
+                  {{ cardValue.card.effect.description }}
+                </div>
               </div>
             </ng-container>
           </div>
@@ -141,23 +203,43 @@
       <div class="row" style="height: 20%;">
         <ng-container *ngIf="user.id === game.owner.id">
           <div *ngFor="let card of game.owner_hand_cards"
-               class="col">
+               class="col p-0">
             <ng-container *ngIf="canPlayCard(card)">
               <div pDraggable="play_card"
                    (onDragStart)="dragCardToPlay(card)"
-                   class="card">
-                {{ card.name }}<br>
-                {{ card.cost }} Mana<br>
-                {{ card.strength }} Atk<br>
-                {{ card.health }} Vie
+                   (mouseenter)="hoverCardSelf(card)"
+                   (mouseleave)="hoverCardSelf(null)"
+                   [ngStyle]="{'background-image': 'url(' + card.picture + ')'}"
+                   class="bs-card">
+                <span class="cost">{{ card.cost }}</span>
+                <span class="strength">{{ card.strength }}</span>
+                <span class="health">{{ card.health }}</span>
+                <div class="name">
+                  {{ card.name }}
+                </div>
+                <div *ngIf="card.effect"
+                     class="effect">
+                  <b>{{ card.effect.name }} : </b><br>
+                  {{ card.effect.description }}
+                </div>
               </div>
             </ng-container>
             <ng-container *ngIf="!canPlayCard(card)">
-              <div class="card">
-                {{ card.name }}<br>
-                {{ card.cost }} Mana<br>
-                {{ card.strength }} Atk<br>
-                {{ card.health }} Vie
+              <div (mouseenter)="hoverCardSelf(card)"
+                   (mouseleave)="hoverCardSelf(null)"
+                   [ngStyle]="{'background-image': 'url(' + card.picture + ')'}"
+                   class="bs-card">
+                <span class="cost">{{ card.cost }}</span>
+                <span class="strength">{{ card.strength }}</span>
+                <span class="health">{{ card.health }}</span>
+                <div class="name">
+                  {{ card.name }}
+                </div>
+                <div *ngIf="card.effect"
+                     class="effect">
+                  <b>{{ card.effect?.name }} : </b><br>
+                  {{ card.effect?.description }}
+                </div>
               </div>
             </ng-container>
           </div>
@@ -169,23 +251,43 @@
         </ng-container>
         <ng-container *ngIf="user.id !== game.owner.id">
           <div *ngFor="let card of game.opponent_hand_cards"
-               class="col">
+               class="col p-0">
             <ng-container *ngIf="canPlayCard(card)">
               <div pDraggable="play_card"
                    (onDragStart)="dragCardToPlay(card)"
-                   class="card">
-                {{ card.name }}<br>
-                {{ card.cost }} Mana<br>
-                {{ card.strength }} Atk<br>
-                {{ card.health }} Vie
+                   (mouseenter)="hoverCardSelf(card)"
+                   (mouseleave)="hoverCardSelf(null)"
+                   [ngStyle]="{'background-image': 'url(' + card.picture + ')'}"
+                   class="bs-card">
+                <span class="cost">{{ card.cost }}</span>
+                <span class="strength">{{ card.strength }}</span>
+                <span class="health">{{ card.health }}</span>
+                <div class="name">
+                  {{ card.name }}
+                </div>
+                <div *ngIf="card.effect"
+                     class="effect">
+                  <b>{{ card.effect?.name }} : </b><br>
+                  {{ card.effect?.description }}
+                </div>
               </div>
             </ng-container>
             <ng-container *ngIf="!canPlayCard(card)">
-              <div class="card">
-                {{ card.name }}<br>
-                {{ card.cost }} Mana<br>
-                {{ card.strength }} Atk<br>
-                {{ card.health }} Vie
+              <div (mouseenter)="hoverCardSelf(card)"
+                   (mouseleave)="hoverCardSelf(null)"
+                   [ngStyle]="{'background-image': 'url(' + card.picture + ')'}"
+                   class="bs-card">
+                <span class="cost">{{ card.cost }}</span>
+                <span class="strength">{{ card.strength }}</span>
+                <span class="health">{{ card.health }}</span>
+                <div class="name">
+                  {{ card.name }}
+                </div>
+                <div *ngIf="card.effect"
+                     class="effect">
+                  <b>{{ card.effect?.name }} : </b><br>
+                  {{ card.effect?.description }}
+                </div>
               </div>
             </ng-container>
           </div>
@@ -221,6 +323,74 @@
             class="btn btn-sm">
       Finir le tour
     </button>
+  </div>
+</div>
+
+<div *ngIf="cardHoveredSelf"
+     [ngStyle]="{'background-image': 'url(' + cardHoveredSelf.picture + ')'}"
+     style="top: 15px;"
+     class="bs-card-hover">
+  <span class="cost">{{ cardHoveredSelf.cost }}</span>
+  <span class="strength">{{ cardHoveredSelf.strength }}</span>
+  <span class="health">{{ cardHoveredSelf.health }}</span>
+  <div class="name">
+    {{ cardHoveredSelf.name }}
+  </div>
+  <div *ngIf="cardHoveredSelf.effect"
+       class="effect">
+    <b>{{ cardHoveredSelf.effect.name }} : </b><br>
+    {{ cardHoveredSelf.effect.description }}
+  </div>
+</div>
+
+<div *ngIf="cardValueHoveredSelf"
+     [ngStyle]="{'background-image': 'url(' + cardValueHoveredSelf.card?.picture + ')'}"
+     style="top: 15px;"
+     class="bs-card-hover">
+  <span class="cost">{{ cardValueHoveredSelf.card?.cost }}</span>
+  <span class="strength">{{ cardValueHoveredSelf.strength }}</span>
+  <span class="health">{{ cardValueHoveredSelf.health }}</span>
+  <div class="name">
+    {{ cardValueHoveredSelf.card?.name }}
+  </div>
+  <div *ngIf="cardValueHoveredSelf.card?.effect"
+       class="effect">
+    <b>{{ cardValueHoveredSelf.card.effect.name }} : </b><br>
+    {{ cardValueHoveredSelf.card.effect.description }}
+  </div>
+</div>
+
+<div *ngIf="cardHoveredOpponent"
+     [ngStyle]="{'background-image': 'url(' + cardHoveredOpponent.picture + ')'}"
+     style="bottom: 15px;"
+     class="bs-card-hover">
+  <span class="cost">{{ cardHoveredOpponent.cost }}</span>
+  <span class="strength">{{ cardHoveredOpponent.strength }}</span>
+  <span class="health">{{ cardHoveredOpponent.health }}</span>
+  <div class="name">
+    {{ cardHoveredOpponent.name }}
+  </div>
+  <div *ngIf="cardHoveredOpponent.effect"
+       class="effect">
+    <b>{{ cardHoveredOpponent.effect.name }} : </b><br>
+    {{ cardHoveredOpponent.effect.description }}
+  </div>
+</div>
+
+<div *ngIf="cardValueHoveredOpponent"
+     [ngStyle]="{'background-image': 'url(' + cardValueHoveredOpponent.card?.picture + ')'}"
+     style="bottom: 15px;"
+     class="bs-card-hover">
+  <span class="cost">{{ cardValueHoveredOpponent.card?.cost }}</span>
+  <span class="strength">{{ cardValueHoveredOpponent.strength }}</span>
+  <span class="health">{{ cardValueHoveredOpponent.health }}</span>
+  <div class="name">
+    {{ cardValueHoveredOpponent.card?.name }}
+  </div>
+  <div *ngIf="cardValueHoveredOpponent.card?.effect"
+       class="effect">
+    <b>{{ cardValueHoveredOpponent.card.effect.name }} : </b><br>
+    {{ cardValueHoveredOpponent.card.effect.description }}
   </div>
 </div>
 

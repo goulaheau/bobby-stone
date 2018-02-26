@@ -23,6 +23,10 @@ export class GamePageComponent implements OnInit, OnDestroy {
   cardToPlay: Card | null;
   attacker: CardValue | null;
   winner: User;
+  cardHoveredSelf: Card;
+  cardValueHoveredSelf: CardValue;
+  cardHoveredOpponent: Card;
+  cardValueHoveredOpponent: CardValue;
 
   constructor(private route: ActivatedRoute,
               private gamesService: GamesService,
@@ -49,6 +53,22 @@ export class GamePageComponent implements OnInit, OnDestroy {
     $('#modalWinner').on('hidden.bs.modal', () => {
       this.router.navigate(['']);
     });
+  }
+
+  hoverCardSelf(card: Card) {
+    this.cardHoveredSelf = card;
+  }
+
+  hoverCardValueSelf(cardValue: CardValue) {
+    this.cardValueHoveredSelf = cardValue;
+  }
+
+  hoverCardOpponent(card: Card) {
+    this.cardHoveredOpponent = card;
+  }
+
+  hoverCardValueOpponent(cardValue: CardValue) {
+    this.cardValueHoveredOpponent = cardValue;
   }
 
   getGame(): void {
@@ -123,6 +143,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   dragCardToPlay(cardToPlay: Card): void {
     this.cardToPlay = cardToPlay;
+    this.hoverCardSelf(null);
   }
 
   dropCardToPlay(): void {
