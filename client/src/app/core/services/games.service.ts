@@ -166,7 +166,6 @@ export class GamesService {
                       game.opponent_graveyard_cards[i].effect = cardEffects[game.opponent_graveyard_cards[i].effect];
                     }
                   }
-                  console.log(game);
                 },
               );
             },

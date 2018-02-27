@@ -17,6 +17,7 @@ from .game_log_action_admin import GameLogActionAdmin
 from .game_log_admin import GameLogAdmin
 from .card_value import CardValue
 from .rule import Rule
+from .rule_admin import RuleAdmin
 from .user import User
 from .user_admin import UserAdmin
 

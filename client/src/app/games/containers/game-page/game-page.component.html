@@ -15,17 +15,38 @@
     <ng-container>
       <div pDroppable="attack"
            (onDrop)="dropAttacker('user')"
-           class="row" style="height: 10%;">
+           class="row"
+           style="height: 10%;">
         <div class="col">
           <ng-container *ngIf="user.id === game.owner.id">
+            Cimetière
+            <div class="bs-card-sm"
+                 style="background-image: url('/assets/img/card-back.png');">
+              {{ game.opponent_graveyard_cards.length }}
+            </div>
             <span>{{ game.opponent_health }} Vie</span>
             <span>{{ game.opponent.username }}</span>
             <span>{{ game.opponent_mana }} Mana</span>
+            <div class="bs-card-sm"
+                 style="background-image: url('/assets/img/card-back.png');">
+              {{ game.opponent_deck_cards.length }}
+            </div>
+            Deck
           </ng-container>
           <ng-container *ngIf="user.id !== game.owner.id">
+            Cimetière
+            <div class="bs-card-sm"
+                 style="background-image: url('/assets/img/card-back.png');">
+              {{ game.owner_graveyard_cards.length }}
+            </div>
             <span>{{ game.owner_health }} Vie</span>
             <span>{{ game.owner.username }}</span>
             <span>{{ game.owner_mana }} Mana</span>
+            <div class="bs-card-sm"
+                 style="background-image: url('/assets/img/card-back.png');">
+              {{ game.owner_deck_cards.length }}
+            </div>
+            Deck
           </ng-container>
         </div>
       </div>
@@ -35,7 +56,7 @@
           <div *ngFor="let card of game.opponent_hand_cards"
                class="col p-0">
             <div class="bs-card"
-                 style="background-image: url('/assets/img/card-back.png')">
+                 style="background-image: url('/assets/img/card-back.png');">
             </div>
           </div>
         </ng-container>
@@ -43,7 +64,7 @@
           <div *ngFor="let card of game.owner_hand_cards"
                class="col p-0">
             <div class="bs-card"
-                 style="background-image: url('/assets/img/card-back.png')">
+                 style="background-image: url('/assets/img/card-back.png');">
             </div>
           </div>
         </ng-container>
@@ -144,11 +165,6 @@
               </div>
             </ng-container>
           </div>
-          <div class="col">
-            <div class="card">
-              {{ game.owner_graveyard_cards.length }}
-            </div>
-          </div>
         </ng-container>
         <ng-container *ngIf="user.id !== game.owner.id">
           <div *ngFor="let cardValue of game.opponent_board_card_values"
@@ -191,11 +207,6 @@
                 </div>
               </div>
             </ng-container>
-          </div>
-          <div class="col">
-            <div class="card">
-              {{ game.opponent_graveyard_cards.length }}
-            </div>
           </div>
         </ng-container>
       </div>
@@ -243,11 +254,6 @@
               </div>
             </ng-container>
           </div>
-          <div class="col">
-            <div class="card">
-              {{ game.owner_deck_cards.length }}
-            </div>
-          </div>
         </ng-container>
         <ng-container *ngIf="user.id !== game.owner.id">
           <div *ngFor="let card of game.opponent_hand_cards"
@@ -291,25 +297,41 @@
               </div>
             </ng-container>
           </div>
-          <div class="col">
-            <div class="card">
-              {{ game.opponent_deck_cards.length }}
-            </div>
-          </div>
         </ng-container>
       </div>
 
-      <div class="row" style="height: 10%;">
+      <div class="row"
+           style="height: 10%;">
         <div class="col">
           <ng-container *ngIf="user.id === game.owner.id">
+            Cimetière
+            <div class="bs-card-sm"
+                 style="background-image: url('/assets/img/card-back.png');">
+              {{ game.owner_graveyard_cards.length }}
+            </div>
             <span>{{ game.owner_health }} Vie</span>
             <span>{{ game.owner.username }}</span>
             <span>{{ game.owner_mana }} Mana</span>
+            <div class="bs-card-sm"
+                 style="background-image: url('/assets/img/card-back.png');">
+              {{ game.owner_deck_cards.length }}
+            </div>
+            Deck
           </ng-container>
           <ng-container *ngIf="user.id !== game.owner.id">
-            <span>{{ game.opponent_health }} Vie </span>
+            Cimetière
+            <div class="bs-card-sm"
+                 style="background-image: url('/assets/img/card-back.png');">
+              {{ game.opponent_graveyard_cards.length }}
+            </div>
+            <span>{{ game.opponent_health }} Vie</span>
             <span>{{ game.opponent.username }}</span>
             <span>{{ game.opponent_mana }} Mana</span>
+            <div class="bs-card-sm"
+                 style="background-image: url('/assets/img/card-back.png');">
+              {{ game.opponent_deck_cards.length }}
+            </div>
+            Deck
           </ng-container>
         </div>
       </div>
