@@ -1,27 +1,26 @@
-import { Injectable }         from '@angular/core';
-import { HttpClient }         from '@angular/common/http';
-import { Observable }         from 'rxjs/Observable';
-import { Game }               from '../../games/models/game';
-import { CardEffectsService } from './card-effects.service';
-import { CardValuesService }  from './card-values.service';
-import { CardsService }       from './cards.service';
-import { RulesService }       from './rules.service';
-import { UsersService }       from './users.service';
-import { WebSocketService }   from './web-socket.service';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {Game} from '../../games/models/game';
+import {CardEffectsService} from './card-effects.service';
+import {CardValuesService} from './card-values.service';
+import {CardsService} from './cards.service';
+import {RulesService} from './rules.service';
+import {UsersService} from './users.service';
+import {WebSocketService} from './web-socket.service';
 
 @Injectable()
 export class GamesService {
-  private url   = 'http://localhost:8000/games/';
+  private url = 'http://localhost:8000/games/';
   private wsUrl = 'ws://localhost:8000/games/';
 
-  constructor(
-    private http: HttpClient,
-    private usersService: UsersService,
-    private cardsService: CardsService,
-    private wsService: WebSocketService,
-    private cardValuesService: CardValuesService,
-    private rulesService: RulesService,
-    private cardEffectsService: CardEffectsService) {
+  constructor(private http: HttpClient,
+              private usersService: UsersService,
+              private cardsService: CardsService,
+              private wsService: WebSocketService,
+              private cardValuesService: CardValuesService,
+              private rulesService: RulesService,
+              private cardEffectsService: CardEffectsService) {
   }
 
   connect(game_id: number, user_id: number): WebSocket {
@@ -31,7 +30,7 @@ export class GamesService {
   getAll(): Observable<Game[]> {
     return this.http
       .get<Game[]>(`${this.url}`)
-      .do((games: Game[]) => {
+      .do(games => {
         this.usersService
           .getAll()
           .subscribe(
@@ -41,16 +40,14 @@ export class GamesService {
                 map[obj.id] = obj;
                 return map;
               }, {});
-              games.forEach(
-                game => {
-                  if (game.owner) {
-                    game.owner = users[game.owner];
-                  }
-                  if (game.opponent) {
-                    game.opponent = users[game.opponent];
-                  }
-                },
-              );
+              games.forEach(game => {
+                if (game.owner) {
+                  game.owner = users[game.owner];
+                }
+                if (game.opponent) {
+                  game.opponent = users[game.opponent];
+                }
+              });
             },
           );
 
@@ -113,14 +110,14 @@ export class GamesService {
                       }, {});
 
                       for (const i in game.owner_board_card_values) {
-                        game.owner_board_card_values[i]      = cardValues[game.owner_board_card_values[i]];
+                        game.owner_board_card_values[i] = cardValues[game.owner_board_card_values[i]];
                         game.owner_board_card_values[i].card = cards[game.owner_board_card_values[i].card];
                         if (typeof game.owner_board_card_values[i].effect === 'number') {
                           game.owner_board_card_values[i].effect = cardEffects[game.owner_board_card_values[i].effect];
                         }
                       }
                       for (const i in game.opponent_board_card_values) {
-                        game.opponent_board_card_values[i]      = cardValues[game.opponent_board_card_values[i]];
+                        game.opponent_board_card_values[i] = cardValues[game.opponent_board_card_values[i]];
                         game.opponent_board_card_values[i].card = cards[game.opponent_board_card_values[i].card];
                         if (typeof game.opponent_board_card_values[i].effect === 'number') {
                           game.opponent_board_card_values[i].effect = cardEffects[game.opponent_board_card_values[i].effect];
