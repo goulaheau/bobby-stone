@@ -1,5 +1,5 @@
 <h2>
-  {{ !deck.id ? 'Créer un deck' : 'Modifier ' + deck.name }}
+  {{ !deck.id ? 'Créer un deck' : deck.name }}
 </h2>
 
 <form (submit)="onSubmit()" class="mb-3">
