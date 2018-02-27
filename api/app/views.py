@@ -10,13 +10,15 @@ from app.serializers import DeckSerializer, UserSerializer, CardSerializer, \
 
 class CustomObtainAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
-        response = super(CustomObtainAuthToken, self).post(request, *args,
-                                                           **kwargs)
+        response = super(CustomObtainAuthToken, self) \
+            .post(request, *args, **kwargs)
 
         token = Token.objects.get(key=response.data['token'])
 
-        return Response({'token': token.key,
-                         'user': UserSerializer(token.user).data})
+        return Response({
+            'token': token.key,
+            'user': UserSerializer(token.user).data
+        })
 
 
 class DeckViewSet(viewsets.ModelViewSet):

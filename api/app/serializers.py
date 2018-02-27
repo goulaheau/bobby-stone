@@ -1,3 +1,5 @@
+from django.contrib.auth.models import Group
+
 from app.models import *
 from rest_framework import serializers
 
@@ -16,6 +18,17 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         new_user = super(UserSerializer, self).create(validated_data)
         new_user.set_password(validated_data['password'])
+
+        group = None
+        group_exists = True
+        try:
+            group = Group.objects.get(name='Player')
+        except Group.DoesNotExist:
+            group_exists = False
+
+        if group_exists:
+            new_user.groups.add(group)
+
         new_user.save()
         return new_user
 
@@ -97,19 +110,6 @@ class CardEffectSerializer(serializers.ModelSerializer):
                 'type',
                 'quantity',
             ]
-
-
-class GameLogSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GameLog
-        fields = [
-            'id',
-            'winner',
-            'loser',
-            'nb_round',
-            'start_game',
-            'end_game',
-        ]
 
 
 class RuleSerializer(serializers.ModelSerializer):

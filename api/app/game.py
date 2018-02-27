@@ -130,6 +130,8 @@ def action_play_card(game, user, payload):
                         card_value.save()
 
                         game.owner_board_card_values.add(card_value)
+                    else:
+                        game.owner_graveyard_cards.add(card_to_play)
                     game.save()
         else:
             try:
@@ -182,6 +184,8 @@ def action_play_card(game, user, payload):
                         card_value.save()
 
                         game.opponent_board_card_values.add(card_value)
+                    else:
+                        game.opponent_graveyard_cards.add(card_to_play)
                     game.save()
 
     if success:

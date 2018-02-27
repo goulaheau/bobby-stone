@@ -103,6 +103,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   onMessage(messageEvent: MessageEvent): void {
     const message: Message = JSON.parse(messageEvent.data);
 
+
     if (this.user.id === message.payload.emitter
       && message.action !== 'end_turn') {
       if (!message.payload.success) {
@@ -203,12 +204,18 @@ export class GamePageComponent implements OnInit, OnDestroy {
                 this.game.owner_board_card_values = this.game.owner_board_card_values.filter(
                   card => card.card.id !== cardValue.card.id,
                 );
-                this.game.owner_graveyard_cards = [...this.game.owner_graveyard_cards, cardValue.card];
+                this.game.owner_graveyard_cards = [
+                  ...this.game.owner_graveyard_cards,
+                  cardValue.card
+                ];
               } else {
                 this.game.opponent_board_card_values = this.game.opponent_board_card_values.filter(
                   card => card.card.id !== cardValue.card.id,
                 );
-                this.game.opponent_graveyard_cards = [...this.game.opponent_graveyard_cards, cardValue.card];
+                this.game.opponent_graveyard_cards = [
+                  ...this.game.opponent_graveyard_cards,
+                  cardValue.card
+                ];
               }
             }
           });
@@ -226,6 +233,11 @@ export class GamePageComponent implements OnInit, OnDestroy {
           this.game.owner_board_card_values = [
             ...this.game.owner_board_card_values,
             card_value_to_play,
+          ];
+        } else {
+          this.game.owner_graveyard_cards = [
+            ...this.game.owner_graveyard_cards,
+            card_to_play
           ];
         }
       }
@@ -289,6 +301,11 @@ export class GamePageComponent implements OnInit, OnDestroy {
             ...this.game.opponent_board_card_values,
             card_value_to_play,
           ];
+        } else {
+          this.game.opponent_graveyard_cards = [
+            ...this.game.opponent_graveyard_cards,
+            card_to_play
+          ];
         }
       }
     }
@@ -309,6 +326,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   dragAttacker(attacker: CardValue): void {
     this.attacker = attacker;
+    this.hoverCardValueSelf(null);
   }
 
   dropAttacker(victim: CardValue): void {

@@ -12,8 +12,8 @@ class Card(models.Model):
         default='monster',
     )
     cost = models.IntegerField(default=1)
-    health = models.IntegerField(null=True)
-    strength = models.IntegerField(null=True)
+    health = models.IntegerField(null=True, blank=True)
+    strength = models.IntegerField(null=True, blank=True)
     effect = models.ForeignKey(
         'CardEffect',
         on_delete=models.CASCADE,
@@ -22,7 +22,7 @@ class Card(models.Model):
     )
     picture = models.ImageField(
         upload_to='card_images',
-        default='media/default.png',
+        default='card_images/default.png',
     )
 
     def __str__(self):

@@ -6,7 +6,6 @@ import { Deck } from '../../models/deck';
   selector: 'app-card-list',
   templateUrl: './card-list.component.html',
   styleUrls: ['./card-list.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class CardListComponent implements OnInit {
   @Input() cards: Card[];

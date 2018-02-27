@@ -1,5 +1,5 @@
 <h2>
-  {{ !deck.id ? 'Créer un deck' : 'Modifier ' + deck.name }}
+  {{ !deck.id ? 'Créer un deck' : deck.name }}
 </h2>
 
 <form (submit)="onSubmit()" class="mb-3">
@@ -7,14 +7,14 @@
     <label for="name">Nom</label>
     <input
       [(ngModel)]="deck.name"
-      [disabled]="userId !== deck.user"
+      [disabled]="userId !== deck.user?.id"
       type="text" id="name" name="name" class="form-control">
   </div>
-  <button *ngIf="userId === deck.user" class="btn btn-primary">Enregistrer</button>
+  <button *ngIf="userId === deck.user?.id" class="btn btn-primary">Enregistrer</button>
 </form>
 
 <app-card-list
-  (editable)="userId === deck.user"
+  (editable)="userId === deck.user?.id"
   [cards]="cards"
   [deck]="deck">
 </app-card-list>

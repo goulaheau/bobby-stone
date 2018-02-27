@@ -3,15 +3,43 @@
   <tr>
     <th scope="col">#</th>
     <th scope="col">Nom</th>
+    <th scope="col">Type</th>
     <th scope="col">Coût</th>
+    <th scope="col">Vie</th>
+    <th scope="col">Force</th>
+    <th scope="col">Effet</th>
+    <th scope="col">Image</th>
     <th scope="col" class="actions"></th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let card of cards">
-    <th scope="row">{{ card.id }}</th>
+    <td scope="row">{{ card.id }}</td>
     <td>{{ card.name }}</td>
+    <td>{{ card.type === 'monster' ? 'Monstre' : 'Sort' }}</td>
     <td>{{ card.cost }}</td>
+    <td>
+      <ng-container *ngIf="card.health">
+        {{ card.health }}
+      </ng-container>
+    </td>
+    <td>
+      <ng-container *ngIf="card.strength">
+        {{ card.strength }}
+      </ng-container>
+    </td>
+    <td>
+      <ng-container *ngIf="card.effect">
+        {{ card.effect.name }} : {{ card.effect.description }}
+      </ng-container>
+    </td>
+    <td>
+      <a [href]="card.picture"
+         target="_blank">
+        <img [src]="card.picture"
+             style="max-width: 100px;">
+      </a>
+    </td>
     <td class="actions">
       <button
         *ngIf="number(card.id) === 0"
