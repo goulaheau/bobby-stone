@@ -103,6 +103,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
   onMessage(messageEvent: MessageEvent): void {
     const message: Message = JSON.parse(messageEvent.data);
 
+    console.log(message);
+
     if (this.user.id === message.payload.emitter
       && message.action !== 'end_turn') {
       if (!message.payload.success) {
@@ -309,6 +311,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   dragAttacker(attacker: CardValue): void {
     this.attacker = attacker;
+    this.hoverCardValueSelf(null);
   }
 
   dropAttacker(victim: CardValue): void {

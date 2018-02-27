@@ -129,7 +129,6 @@ export class GamesService {
                     },
                   );
 
-
                   for (const i in game.owner_deck_cards) {
                     game.owner_deck_cards[i] = cards[game.owner_deck_cards[i]];
                     if (typeof game.owner_deck_cards[i].effect === 'number') {

@@ -22,7 +22,7 @@ class Card(models.Model):
     )
     picture = models.ImageField(
         upload_to='card_images',
-        default='media/default.png',
+        default='media/card_images/default.png',
     )
 
     def __str__(self):
