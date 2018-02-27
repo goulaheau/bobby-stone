@@ -2,3 +2,62 @@
   display: block;
   box-shadow: 0 0 2px #aaa;
 }
+@font-face {
+  font-family: bliz;
+  src: url(../../../../assets/fonts/bliz-quadrata.woff);
+}
+
+#on{
+  display: none;
+}
+
+.music{
+  width: 50px;
+  height: 50px;
+  border: 3px solid yellow;
+  position: absolute;
+  right: 40px;
+  top: 20px;
+}
+
+.nav-link{
+  z-index: 999999999;
+  margin-right: 125px;
+
+  i{
+    font-size: 50px;
+    height: 50px;
+    margin-top: 4px;
+    margin-right: -25px;
+    border: 2px inset yellow;
+  }
+}
+
+.banniere{
+  background-image:url('../../../../assets/img/heroesofwarcraft-min.png');
+  background-repeat: no-repeat;
+  //background-attachment: fixed;
+  background-position: -5px -252px;
+  border-bottom: 5px solid #E7BDAA;
+  height: 250px;
+}
+
+.text-info{
+  position: fixed ;
+  padding-top: 40px;
+  padding-left: 12px;
+  color: #FFFF34 !important;
+  font-size: 3.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 5px 0 0 #65523E, -5px 0 0 #65523E, 0 5px 0 #65523E, 0 -5px 0 #65523E, 4px 4px #65523E, -4px -4px 0 #65523E, 4px -4px 0 #65523E, -4px 4px 0 #65523E;
+  transition: color .2s ease-out;
+  font-family: bliz;
+}
+
+.text-info:hover{
+  color: #65523E !important;
+  text-shadow: 5px 0 0 #FFFF34, -5px 0 0 #FFFF34, 0 5px 0 #FFFF34, 0 -5px 0 #FFFF34, 4px 4px #FFFF34, -4px -4px 0 #FFFF34, 4px -4px 0 #FFFF34, -4px 4px 0 #FFFF34;
+}
+
+

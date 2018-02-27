@@ -103,8 +103,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
   onMessage(messageEvent: MessageEvent): void {
     const message: Message = JSON.parse(messageEvent.data);
 
-    console.log(message.payload.success, message);
-
     if (this.user.id === message.payload.emitter
       && message.action !== 'end_turn') {
       if (!message.payload.success) {
