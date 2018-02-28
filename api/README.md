@@ -56,6 +56,8 @@ You can also create some Effects for you cards.
 
 Now, you can create some standards Deck available for everyone by letting empty the field user. Or you can create your own decks in the client.
 
+And for a better organization of your users, you can create a group named Player with no permissions. 
+
 That's all what is necessary for the server.
 
 ## Acknowledgments
