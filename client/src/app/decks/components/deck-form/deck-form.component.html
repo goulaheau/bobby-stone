@@ -7,14 +7,17 @@
     <label for="name">Nom</label>
     <input
       [(ngModel)]="deck.name"
-      [disabled]="userId !== deck.user?.id"
+      [disabled]="deck.id && userId !== deck.user?.id"
       type="text" id="name" name="name" class="form-control">
   </div>
-  <button *ngIf="userId === deck.user?.id" class="btn btn-primary">Enregistrer</button>
+  <button *ngIf="!deck.id || userId === deck.user?.id"
+          class="btn btn-primary">
+    Enregistrer
+  </button>
 </form>
 
 <app-card-list
-  (editable)="userId === deck.user?.id"
+  [editable]="!deck.id || userId === deck.user?.id"
   [cards]="cards"
   [deck]="deck">
 </app-card-list>

@@ -1,129 +1,96 @@
-# bobby-unknowns-battle-cards-api
-BobbyStone Python API
+# BobbyStone API
 
-# Decription
+RESTful API based on Django Rest Framework.
 
-# Installation
-## Dependencies
-Run the following command :
-    
+## Getting Started
+
+### Prerequisites
+
+[Python](https://www.python.org/downloads/) 3.6.3 or higher is required.
+
+Then install all the dependencies with pip.
+
 ```
-pip install -r requirements.txt --no-index
-```
-    
-## Settings.py
-
-Make sure, you have add the following lines into your settings.py
-
-### Installed Apps
-```
-    INSTALLED_APPS = [
-        ...,
-        'app',
-        'rest_framework',
-        'rest_framework.authtoken',
-        'corsheaders',
-        'django_filters',
-        'channels',
-    ]
+pip install Django==2.0.1
+pip install djangorestframework==3.7.7
+pip install markdown      
+pip install django-filter 
+pip install -U channels==1.1.8
+pip install Pillow==5.0.0
 ```
 
-### Django Rest Framework
+### Installing
+
+Open the console and get inside this directory.
+
+Then get the database working (we are using sqlite).
+
 ```
-    REST_FRAMEWORK = {
-        'DEFAULT_PERMISSION_CLASSES': [
-            'rest_framework.permissions.IsAdminUser',
-            'rest_framework.permissions.IsAuthenticated',
-        ],
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-            'rest_framework.authentication.BasicAuthentication',
-            'rest_framework.authentication.SessionAuthentication',
-            'rest_framework.authentication.TokenAuthentication',
-        ),
-        'DEFAULT_FILTER_BACKENDS': (
-            'django_filters.rest_framework.DjangoFilterBackend',
-        )
-    }
+python manage.py makemigrations app
+python manage.py migrate
 ```
 
-### Cors headers
-```
-CORS_ORIGIN_ALLOW_ALL = True
+Next, create at least one superuser.
 
-CORS_ALLOW_HEADERS = (
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    'token-type'
-)
+```
+python manage.py createsuperuser
 ```
 
-### Django Channels
+Now, you can run the server.
+
 ```
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "app.routing.channel_routing",
-    },
-}
+python manage.py runserver
 ```
 
-### Authentication
-```
-AUTH_USER_MODEL = 'app.User
-```
+### Create your datas
 
-# Documentation
+Some datas are primordial, so you'll have to create them.
 
-## Run the server
-```
-    python manage.py runserver
-```
+Go to http://localhost:8000/admin and connect with your super user.
 
-## Migrations
-```
-    python manage.py makemigrations
-    python manage.py migrate
-```
+Now create at least a Rule, you can let the default or personnalize them.
 
-## SpecTechniques
-```
-   Rules
-   
-    Déroulement de la game 
-    carte à piocher : 1
-    carte à poser : 1 ou 0
-    carte à poser sur le tapis : 3 max
-    carte qui peuvent attaquer : carte posées sur le tapis
-    
-    Conditions de victoire/défaite
-    pv du joueur à 0
-    
-    Global
-    nombre de carte dans un deck : 30
-    pv des joueurs : 30 
-```
+Next, you should create some cards, you can let the field image empty, there is a default image. Create at least the same number that you have defined in the rules.
 
-## Modèle
+You can also create some Effects for you cards.
+
+Now, you can create some standards Deck available for everyone by letting empty the field user. Or you can create your own decks in the client.
+
+That's all what is necessary for the server.
+
+## Acknowledgments
+
+### Folder structure
+
 ```
-User
-UserAdmin
-CardType
-CardEffect
-CardEffectAdmin
-Card
-CardAdmin
-Deck
-DeckAdmin
-GameLog
-GameLogAdmin
-Rules
-Game
-ActionsLog
+api --------------------------- Root folder
+│   .gitignore ---------------- Files ignore by Git 
+│   manage.py ----------------- Django file to launch some commands
+│   README.md ----------------- Documentation 
+│
+├────api ---------------------- Global settings of the project
+│   │   ...
+│
+├────app ---------------------- Main folder
+│   │───migrations ------------ Migrations folder
+|   |   │   ...
+|   | 
+│   │──-models ---------------- Models folder
+|   |   │   ...
+|   | 
+│   │   admin.py -------------- All the entities in the Admin site
+│   │   app.py ---------------- Config file
+│   │   consumers.py ---------- Websockets' functions
+│   │   game.py --------------- All the actions during the game
+│   │   routing.py ------------ Websockets' routes
+│   │   serializers.py -------- Serializers used for REST
+│   │   tests.py -------------- Tests 
+│   │   urls.py --------------- Routes 
+│   │   views.py -------------- ViewSets used for REST 
+│
+├────db ----------------------- Database files
+│   │   ...
+|
+├────media -------------------- Media files
+│   │   ...
 ```
