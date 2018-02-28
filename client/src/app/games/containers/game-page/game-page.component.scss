@@ -11,7 +11,12 @@
     align-items: center;
     height: calc(100% - 56px - 2rem);
   }
-
+  span{
+    color:white;
+  }
+  .name{
+    color: white;
+  }
   .page {
     margin: 15px;
     height: calc(100% - 56px - 2rem);
@@ -23,12 +28,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      color: white;
     }
 
     .board {
       margin: 0 15px;
       height: 100%;
       width: calc(100% - 200px);
+
 
       div {
         display: -webkit-box;

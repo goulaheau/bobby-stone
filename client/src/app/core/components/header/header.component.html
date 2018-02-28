@@ -1,10 +1,13 @@
-<div class="container">
+<div class="banniere">
   <div class="row">
     <div class="col-md-12">
       <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
         <a class="navbar-brand text-info" routerLink="/">
           BobbyStone
         </a>
+        <audio src="../../../../assets/zik/hearthstoneMusicLauncher.m4a" autoplay id="audio"></audio>
+        <button id="off" class="fa fa-pause fa-2x music" (click)="shutDown()"></button>
+        <button id="on" class="fa fa-play fa-2x music" style="color: #79baff" (click)="putOn()"></button>
         <div class="btn-group ml-auto" dropdown>
           <button dropdownToggle type="button" class="navbar-toggler btn-sm">
             <span class="navbar-toggler-icon"></span>

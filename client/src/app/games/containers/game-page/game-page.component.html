@@ -19,7 +19,7 @@
            style="height: 10%;">
         <div class="col">
           <ng-container *ngIf="user.id === game.owner.id">
-            Cimetière
+            <span>Cimetière</span>
             <div class="bs-card-sm"
                  style="background-image: url('/assets/img/card-back.png');">
               {{ game.opponent_graveyard_cards.length }}
@@ -31,10 +31,10 @@
                  style="background-image: url('/assets/img/card-back.png');">
               {{ game.opponent_deck_cards.length }}
             </div>
-            Deck
+           <span>Deck</span>
           </ng-container>
           <ng-container *ngIf="user.id !== game.owner.id">
-            Cimetière
+            <span>Cimetière</span>
             <div class="bs-card-sm"
                  style="background-image: url('/assets/img/card-back.png');">
               {{ game.owner_graveyard_cards.length }}
@@ -46,7 +46,7 @@
                  style="background-image: url('/assets/img/card-back.png');">
               {{ game.owner_deck_cards.length }}
             </div>
-            Deck
+            <span>Deck</span>
           </ng-container>
         </div>
       </div>
@@ -304,7 +304,7 @@
            style="height: 10%;">
         <div class="col">
           <ng-container *ngIf="user.id === game.owner.id">
-            Cimetière
+            <span>Cimetière</span>
             <div class="bs-card-sm"
                  style="background-image: url('/assets/img/card-back.png');">
               {{ game.owner_graveyard_cards.length }}
@@ -316,10 +316,10 @@
                  style="background-image: url('/assets/img/card-back.png');">
               {{ game.owner_deck_cards.length }}
             </div>
-            Deck
+            <span>Deck</span>
           </ng-container>
           <ng-container *ngIf="user.id !== game.owner.id">
-            Cimetière
+            <span>Cimetière</span>
             <div class="bs-card-sm"
                  style="background-image: url('/assets/img/card-back.png');">
               {{ game.opponent_graveyard_cards.length }}
@@ -331,7 +331,7 @@
                  style="background-image: url('/assets/img/card-back.png');">
               {{ game.opponent_deck_cards.length }}
             </div>
-            Deck
+            <span>Deck</span>
           </ng-container>
         </div>
       </div>
@@ -350,7 +350,7 @@
 
 <div *ngIf="cardHoveredSelf"
      [ngStyle]="{'background-image': 'url(' + cardHoveredSelf.picture + ')'}"
-     style="top: 15px;"
+     style="top: 15px; border: 5px solid black; background-color:brown;"
      class="bs-card-hover">
   <span class="cost">{{ cardHoveredSelf.cost }}</span>
   <span class="strength">{{ cardHoveredSelf.strength }}</span>
@@ -367,7 +367,7 @@
 
 <div *ngIf="cardValueHoveredSelf"
      [ngStyle]="{'background-image': 'url(' + cardValueHoveredSelf.card?.picture + ')'}"
-     style="top: 15px;"
+     style="top: 15px; border: 5px solid black; background-color:brown;"
      class="bs-card-hover">
   <span class="cost">{{ cardValueHoveredSelf.card?.cost }}</span>
   <span class="strength">{{ cardValueHoveredSelf.strength }}</span>
@@ -384,7 +384,7 @@
 
 <div *ngIf="cardHoveredOpponent"
      [ngStyle]="{'background-image': 'url(' + cardHoveredOpponent.picture + ')'}"
-     style="bottom: 15px;"
+     style="border: 5px solid black; background-color:brown;;"
      class="bs-card-hover">
   <span class="cost">{{ cardHoveredOpponent.cost }}</span>
   <span class="strength">{{ cardHoveredOpponent.strength }}</span>
@@ -401,7 +401,7 @@
 
 <div *ngIf="cardValueHoveredOpponent"
      [ngStyle]="{'background-image': 'url(' + cardValueHoveredOpponent.card?.picture + ')'}"
-     style="bottom: 15px;"
+     style="border: 5px solid black; background-color:brown;"
      class="bs-card-hover">
   <span class="cost">{{ cardValueHoveredOpponent.card?.cost }}</span>
   <span class="strength">{{ cardValueHoveredOpponent.strength }}</span>

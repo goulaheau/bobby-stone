@@ -1,0 +1,59 @@
+@font-face {
+    font-family: bliz;
+    src: url(../../../../assets/fonts/bliz-quadrata.woff);
+  }
+  
+  
+  .homeBoutons{
+    z-index: 99999;
+  }
+  .container{
+    width: 760px !important;
+  }
+  button{
+    color: #402617;
+    background-color: #995F3D;
+    font-family: bliz;
+    font-size: 2rem;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+  
+  button:hover{
+    background-color: #995F3D;
+    border: 5px solid #995F3D;
+  }
+  
+  .bt1{
+      position: absolute;
+      left: 150px;
+      top: 78px;
+      width: 60%;
+      height: 80px;
+      border: 5px solid #E7BDAA;
+      padding: 10px;
+      border-radius: 177px 177px 0 0
+  }
+  
+  .bt2{
+    position: absolute;
+    left: 150px;
+    top: 188px;
+    width: 60%;
+    height: 80px;
+    border: 5px solid #E7BDAA;
+    padding: 10px;
+    border-radius: 15px 15px 15px 15px
+  }
+  
+  .bt3{
+    position: absolute;
+    left: 150px;
+    top: 300px;
+    width: 60%;
+    height: 80px;
+    border: 5px solid #E7BDAA;
+    padding: 10px;
+    border-radius: 0 0 177px 177px
+  }
+  

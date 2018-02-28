@@ -6,6 +6,13 @@
 html,
 body {
   height: 100%;
+  width: 100%;
+  background-image: url('https://i.ytimg.com/vi/DGPsaTgSzYQ/maxresdefault.jpg');
+  background-repeat: no-repeat;
+  //background-attachment: fixed;
+  background-position: center 0px;
+  overflow-x: hidden;
+  overflow-y: auto;
   //background: #1d1d1d;
   //color: white;
 }
