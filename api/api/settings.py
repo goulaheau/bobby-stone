@@ -152,7 +152,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-STATIC_URL = 'http://localhost:8000/static/'
+STATIC_URL = '/static/'
 
 # The path that will hold uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
